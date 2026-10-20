@@ -1,94 +1,270 @@
+/*
+ * Estilos del formulario. Se diseñó primero para el celular (375 px) y
+ * después se amplía para escritorio con una media query.
+ *
+ * Todos los colores de texto cumplen al menos 4,5:1 de contraste (WCAG AA).
+ * El azul de la marca (#3fa9c9) solo daba 2,7:1 con texto blanco, así que
+ * se usa una versión más oscura del mismo tono (#0b6279, 6,9:1).
+ */
+:root {
+  --marca: #0b6279;
+  --marca-oscura: #084a5c;
+  --marca-suave: #e8f3f6;
+  --texto: #1d2b33;
+  --texto-suave: #4a5a63;
+  --fondo: #f6f4f0;
+  --tarjeta: #ffffff;
+  --borde: #8a989f;          /* 3:1 sobre blanco: el contorno del campo se ve */
+  --borde-suave: #dfe3e5;
+  --error: #b42318;
+  --error-fondo: #fdf0ef;
+  --aviso: #8a5a00;
+  --aviso-fondo: #fff7e6;
+  --ok: #1b6e3a;
+  --foco: #f2a900;
+  --radio: 10px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
 body {
   margin: 0;
-  background: #e9e9e9;
-  font-family: Arial, sans-serif;
-  font-size: 12px;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 1rem;           /* 16 px: por debajo de esto el iPhone hace zoom al tocar un campo */
+  line-height: 1.5;
 }
-#contenedor {
-  width: 960px;
-  margin: 0 auto;
-  background: white;
+
+a { color: var(--marca); text-underline-offset: 2px; }
+a:hover { color: var(--marca-oscura); }
+
+/* Foco visible en todo lo que se puede usar con teclado (el original lo quitaba). */
+:focus-visible {
+  outline: 3px solid var(--foco);
+  outline-offset: 2px;
 }
-.cabecera {
-  height: 70px;
-  background: #3fa9c9;
-  color: white;
+
+.sin-corte { white-space: nowrap; }
+
+.visualmente-oculto {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+.saltar {
+  position: absolute; left: 8px; top: -60px; z-index: 10;
+  background: var(--texto); color: #fff; padding: 10px 14px; border-radius: 6px;
+}
+.saltar:focus { top: 8px; }
+
+/* ---------- Cabecera ---------- */
+.cabecera { background: var(--marca); color: #fff; }
+.cabecera-interior {
+  max-width: 1040px; margin: 0 auto; padding: 10px 16px;
+  display: flex; align-items: center; gap: 16px; min-height: 60px;
 }
 .logo {
-  float: left;
-  padding: 25px 20px;
-  font-weight: bold;
-  font-size: 16px;
+  display: flex; align-items: center; gap: 8px;
+  color: #fff; text-decoration: none; font-size: 1rem; line-height: 1.2;
 }
-.menu {
-  float: right;
-  padding: 28px 20px;
-  font-size: 11px;
+.logo:hover { color: #fff; }
+.logo-icono { width: 26px; height: 26px; fill: #fff; flex: none; }
+.menu { display: none; }
+.llamar {
+  margin-left: auto; display: inline-flex; align-items: center; gap: 6px;
+  min-height: 44px; padding: 0 14px; border-radius: 999px; flex: none;
+  border: 2px solid #fff; color: #fff; font-weight: 600; text-decoration: none;
 }
-.banner {
-  height: 220px;
-  background: #b8e2ee;
-  padding: 50px 40px;
-  box-sizing: border-box;
+.llamar:hover { background: #fff; color: var(--marca); }
+.llamar svg { width: 18px; height: 18px; fill: currentColor; }
+
+/* ---------- Página ---------- */
+.pagina { max-width: 1040px; margin: 0 auto; padding: 20px 16px 32px; }
+
+.intro h1 { margin: 0 0 4px; font-size: 1.75rem; line-height: 1.2; letter-spacing: -0.01em; }
+.intro-texto { margin: 0 0 20px; color: var(--texto-suave); }
+
+.tarjeta {
+  background: var(--tarjeta); border: 1px solid var(--borde-suave);
+  border-radius: 14px; padding: 18px 16px 22px;
 }
-.banner-texto {
-  font-size: 34px;
-  color: white;
-  font-weight: bold;
+
+.aviso-urgencia {
+  display: flex; gap: 10px; align-items: flex-start;
+  background: var(--aviso-fondo); color: var(--aviso);
+  border: 1px solid #f0d59a; border-radius: var(--radio);
+  padding: 12px; margin-bottom: 20px; font-size: 0.9375rem;
 }
-.banner-sub {
-  color: white;
-  font-size: 14px;
-  margin-top: 10px;
-  width: 600px;
+.aviso-urgencia p { margin: 0; color: #5c3d00; }
+.aviso-urgencia svg { width: 22px; height: 22px; fill: var(--aviso); flex: none; margin-top: 1px; }
+.aviso-urgencia a { color: #5c3d00; font-weight: 700; white-space: nowrap; }
+
+/* ---------- Campos ---------- */
+.nota-campos { margin: 0 0 16px; font-size: 0.9375rem; color: var(--texto-suave); }
+
+.campo { margin-bottom: 18px; }
+.campo label { display: block; font-weight: 600; margin-bottom: 4px; }
+.opcional { font-weight: 400; color: var(--texto-suave); }
+.ayuda { margin: 0 0 6px; font-size: 0.875rem; color: var(--texto-suave); }
+
+input[type="text"], input[type="tel"], input[type="email"], select, textarea {
+  display: block; width: 100%;
+  min-height: 48px;          /* objetivo táctil cómodo */
+  padding: 10px 12px;
+  font: inherit; font-size: 1rem; color: var(--texto);
+  background: #fff; border: 1.5px solid var(--borde); border-radius: var(--radio);
+  -webkit-appearance: none; appearance: none;
 }
-.columnas {
-  overflow: hidden;
-  padding: 20px;
+textarea { resize: vertical; min-height: 104px; }
+input:hover, select:hover, textarea:hover { border-color: var(--texto-suave); }
+input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 3px solid var(--foco); outline-offset: 1px; border-color: var(--marca);
 }
-.col-izq {
-  float: left;
-  width: 560px;
+
+.select { position: relative; }
+.select::after {
+  content: ""; position: absolute; right: 16px; top: 50%;
+  width: 8px; height: 8px; margin-top: -6px;
+  border-right: 2px solid var(--texto); border-bottom: 2px solid var(--texto);
+  transform: rotate(45deg); pointer-events: none;
 }
-.col-der {
-  float: right;
-  width: 320px;
+select { padding-right: 40px; }
+select:invalid, select option[value=""] { color: var(--texto-suave); }
+select option { color: var(--texto); }
+
+/* Estados de validación: el error se marca con borde, ícono y texto, nunca solo con color. */
+.campo.con-error input, .campo.con-error select, .campo.con-error textarea {
+  border-color: var(--error); border-width: 2px; background: var(--error-fondo);
 }
-.titulo {
-  font-size: 18px;
-  color: #3fa9c9;
-  margin-bottom: 5px;
+.campo.valido input, .campo.valido select { border-color: var(--ok); }
+
+.error {
+  margin: 6px 0 0; color: var(--error); font-size: 0.9375rem; font-weight: 500;
+  display: none;
 }
-.texto {
-  color: #999;
+.campo.con-error .error { display: flex; gap: 6px; }
+.campo.con-error .error::before {
+  content: "!"; flex: none; width: 18px; height: 18px; margin-top: 2px;
+  border-radius: 50%; background: var(--error); color: #fff;
+  font-size: 0.75rem; font-weight: 700; line-height: 18px; text-align: center;
 }
-input, select, textarea {
-  display: block;
-  width: 400px;
-  margin-bottom: 6px;
-  padding: 4px;
-  border: 1px solid #ddd;
-  font-size: 11px;
-  color: #aaa;
+.boton-sugerencia {
+  font: inherit; font-weight: 700; color: var(--error); background: none;
+  border: none; padding: 0; text-decoration: underline; cursor: pointer;
 }
-textarea {
-  height: 40px;
+
+.contador { margin: 4px 0 0; font-size: 0.8125rem; color: var(--texto-suave); text-align: right; }
+
+/* ---------- Consentimiento ---------- */
+.check { display: flex; gap: 12px; align-items: flex-start; }
+.check input {
+  flex: none; width: 24px; height: 24px; margin: 1px 0 0;
+  accent-color: var(--marca);
 }
-input:focus, select:focus, textarea:focus {
-  outline: none;
+.check label { font-weight: 500; margin: 0; }
+.campo-check.con-error .check label { color: var(--error); }
+.datos { margin: 8px 0 0 36px; font-size: 0.9375rem; }
+.datos summary {
+  cursor: pointer; color: var(--marca); font-weight: 600;
+  min-height: 44px; display: flex; align-items: center;
 }
+.datos ul { margin: 0; padding-left: 20px; color: var(--texto-suave); }
+.datos li { margin-bottom: 4px; }
+
+.trampa { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+/* ---------- Qué pasa después ---------- */
+.despues {
+  background: var(--marca-suave); border-radius: var(--radio);
+  padding: 14px 16px; margin: 22px 0 16px;
+}
+.despues h3 { margin: 0 0 6px; font-size: 1rem; color: var(--marca-oscura); }
+.despues ol { margin: 0; padding-left: 20px; font-size: 0.9375rem; }
+.despues li { margin-bottom: 4px; }
+
+/* ---------- Botón ---------- */
 .boton {
-  width: 80px;
-  padding: 5px;
-  background: #3fa9c9;
-  color: white;
-  text-align: center;
-  font-size: 11px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; min-height: 54px; padding: 12px 20px;
+  font: inherit; font-size: 1.0625rem; font-weight: 700;
+  color: #fff; background: var(--marca); border: none; border-radius: var(--radio);
   cursor: pointer;
 }
-.pie {
-  padding: 10px 20px;
-  font-size: 9px;
-  color: #bbb;
-  background: #f5f5f5;
+.boton:hover { background: var(--marca-oscura); }
+.boton[disabled] { opacity: 0.75; cursor: progress; }
+.boton.enviando .boton-texto::before {
+  content: ""; display: inline-block; width: 16px; height: 16px; margin-right: 10px;
+  vertical-align: -2px; border: 2.5px solid rgba(255,255,255,0.4); border-top-color: #fff;
+  border-radius: 50%; animation: girar 0.8s linear infinite;
+}
+@keyframes girar { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .boton.enviando .boton-texto::before { animation: none; } }
+
+.boton-secundario {
+  background: #fff; color: var(--marca); border: 2px solid var(--marca); margin-top: 8px;
+}
+.boton-secundario:hover { background: var(--marca-suave); color: var(--marca-oscura); }
+
+/* ---------- Errores generales ---------- */
+.resumen-errores {
+  border: 2px solid var(--error); background: var(--error-fondo);
+  border-radius: var(--radio); padding: 12px 16px; margin-bottom: 20px;
+}
+.resumen-errores h3 { margin: 0 0 6px; font-size: 1rem; color: var(--error); }
+.resumen-errores ul { margin: 0; padding-left: 20px; }
+.resumen-errores li { margin-bottom: 4px; }
+.resumen-errores a { color: var(--error); font-weight: 600; }
+
+.error-envio {
+  border-left: 4px solid var(--error); background: var(--error-fondo);
+  padding: 10px 12px; margin: 0 0 14px; color: var(--texto); border-radius: 6px;
+}
+
+/* ---------- Confirmación ---------- */
+.confirmacion { text-align: center; padding: 12px 4px; }
+.confirmacion:focus { outline: none; }
+.confirmacion-icono { width: 56px; height: 56px; fill: var(--ok); }
+.confirmacion h2 { margin: 8px 0 10px; font-size: 1.375rem; line-height: 1.3; }
+.confirmacion p { margin: 0 0 12px; }
+
+/* ---------- Lateral ---------- */
+.lateral { margin-top: 28px; }
+.lateral h2 { font-size: 1.25rem; margin: 0 0 12px; }
+.sede {
+  background: var(--tarjeta); border: 1px solid var(--borde-suave);
+  border-radius: var(--radio); padding: 14px 16px; margin-bottom: 12px;
+}
+.sede h3 { margin: 0 0 2px; font-size: 1rem; }
+.sede p { margin: 0 0 8px; color: var(--texto-suave); font-size: 0.9375rem; }
+.sede dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 2px 12px; font-size: 0.9375rem; }
+.sede dt { color: var(--texto-suave); }
+.sede dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+.telefono-lateral { margin: 4px 0 0; }
+.telefono-lateral a { font-weight: 700; }
+
+.pie { text-align: center; padding: 20px 16px 28px; color: var(--texto-suave); font-size: 0.875rem; }
+.pie p { margin: 0; }
+
+/* ---------- Escritorio ---------- */
+@media (min-width: 800px) {
+  .menu { display: flex; gap: 4px; margin-left: auto; }
+  .menu a {
+    color: #fff; text-decoration: none; padding: 8px 12px; border-radius: 6px; font-size: 0.9375rem;
+  }
+  .menu a:hover, .menu a[aria-current="page"] { background: rgba(255,255,255,0.16); color: #fff; }
+  .llamar { margin-left: 8px; }
+
+  .pagina { padding: 36px 24px 48px; }
+  .intro h1 { font-size: 2.25rem; }
+  .intro-texto { font-size: 1.125rem; margin-bottom: 28px; }
+
+  .columnas { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 32px; align-items: start; }
+  .tarjeta { padding: 28px 32px 32px; }
+  .lateral { margin-top: 0; position: sticky; top: 24px; }
+
+  .boton { width: auto; min-width: 260px; }
+  #formulario, .resumen-errores, .aviso-urgencia { max-width: 560px; }
 }

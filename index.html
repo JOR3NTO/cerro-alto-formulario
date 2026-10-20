@@ -1,61 +1,200 @@
 <!DOCTYPE html>
-<html>
+<html lang="es-EC">
 <head>
 <meta charset="utf-8">
-<title>Clinica Dental Cerro Alto</title>
+<!-- Sin esta etiqueta el celular dibuja la página a 980 px y la encoge: era la causa principal de que se usara mal. -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agenda tu cita · Clínica Dental Cerro Alto</title>
+<meta name="description" content="Déjanos tus datos y te llamamos para agendar tu cita en la Clínica Dental Cerro Alto, en Quito y Cumbayá.">
+<meta name="theme-color" content="#0b6279">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<div id="contenedor">
-  <div class="cabecera">
-    <div class="logo">CLINICA DENTAL CERRO ALTO</div>
-    <div class="menu">INICIO | SERVICIOS | SEDES | NOSOTROS | CONTACTO</div>
-  </div>
+<a class="saltar" href="#formulario">Ir al formulario</a>
 
-  <div class="banner">
-    <div class="banner-texto">TU SONRISA ES NUESTRA PRIORIDAD!!!</div>
-    <div class="banner-sub">Mas de 15 años cuidando la salud dental de las familias quiteñas con la mejor tecnologia y los mejores profesionales del pais</div>
+<header class="cabecera">
+  <div class="cabecera-interior">
+    <a class="logo" href="#" aria-label="Clínica Dental Cerro Alto, inicio">
+      <svg class="logo-icono" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7.5 3C4.9 3 3 5.1 3 7.9c0 2.3.8 4 1.6 5.9.7 1.6 1 3.7 1.4 5.6.3 1.4.9 2.6 1.9 2.6 1.2 0 1.6-1.4 1.9-3.1.3-1.6.7-3.4 2.2-3.4s1.9 1.8 2.2 3.4c.3 1.7.7 3.1 1.9 3.1 1 0 1.6-1.2 1.9-2.6.4-1.9.7-4 1.4-5.6.8-1.9 1.6-3.6 1.6-5.9C21 5.1 19.1 3 16.5 3c-1.6 0-2.6.7-4.5.7S9.1 3 7.5 3z"/></svg>
+      <span>Clínica Dental <strong>Cerro Alto</strong></span>
+    </a>
+    <nav class="menu" aria-label="Principal">
+      <a href="#">Inicio</a>
+      <a href="#">Servicios</a>
+      <a href="#sedes">Sedes</a>
+      <a href="#">Nosotros</a>
+      <a href="#formulario" aria-current="page">Contacto</a>
+    </nav>
+    <a class="llamar" href="tel:+59320004400">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>
+      <span>Llamar</span>
+    </a>
   </div>
+</header>
+
+<main class="pagina">
+  <section class="intro" aria-labelledby="titulo">
+    <h1 id="titulo">Agenda tu cita</h1>
+    <p class="intro-texto">Déjanos tus datos y te llamamos para elegir el día y la sede. Te toma menos de un minuto.</p>
+  </section>
 
   <div class="columnas">
-    <div class="col-izq">
-      <div class="titulo">Contactenos</div>
-      <p class="texto">Llene el siguiente formulario y nos pondremos en contacto.</p>
+    <section class="tarjeta" aria-labelledby="titulo-form">
+      <h2 id="titulo-form" class="visualmente-oculto">Formulario de contacto</h2>
 
-      <form id="formulario">
-        <input type="text" id="nombre" placeholder="Nombre">
-        <input type="text" id="telefono" placeholder="Telefono">
-        <input type="text" id="correo" placeholder="Email">
-        <input type="text" id="ciudad" placeholder="Ciudad">
-        <select id="servicio">
-          <option>Seleccione...</option>
-          <option>Blanqueamiento</option>
-          <option>Combo limpieza + blanqueamiento</option>
-          <option>Limpieza</option>
-          <option>Valoración</option>
-          <option>Ortodoncia</option>
-          <option>Alineadores</option>
-          <option>Otro</option>
-        </select>
-        <textarea id="mensaje" placeholder="Mensaje"></textarea>
-        <div class="boton" onclick="enviar()">ENVIAR</div>
+      <!-- Urgencias primero: quien tiene dolor no debe esperar a que lo llamen. -->
+      <div class="aviso-urgencia" role="note" aria-label="Urgencias">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2 1 21h22L12 2zm1 15h-2v-2h2v2zm0-4h-2V9h2v4z"/></svg>
+        <p><strong>¿Tienes dolor fuerte, hinchazón o sangrado?</strong> No esperes a que te llamemos: llama a la línea de urgencias <a href="tel:+59320004410">+593 2 000 4410</a>. Si las dos sedes están cerradas, acude a la emergencia del hospital más cercano o llama al ECU 911.</p>
+      </div>
+
+      <!-- Resumen de errores: aparece al intentar enviar con datos por corregir. -->
+      <div id="resumen-errores" class="resumen-errores" tabindex="-1" hidden>
+        <h3 id="resumen-titulo">Revisa estos datos antes de enviar:</h3>
+        <ul id="resumen-lista"></ul>
+      </div>
+
+      <form id="formulario" novalidate>
+        <p class="nota-campos">Todos los campos son obligatorios, salvo los que dicen <em>(opcional)</em>.</p>
+
+        <div class="campo" data-campo="nombre">
+          <label for="nombre">Nombre y apellido</label>
+          <input id="nombre" name="nombre" type="text" autocomplete="name" autocapitalize="words" enterkeyhint="next" maxlength="80" aria-describedby="nombre-error" required>
+          <p class="error" id="nombre-error" aria-live="polite"></p>
+        </div>
+
+        <div class="campo" data-campo="telefono">
+          <label for="telefono">Celular</label>
+          <p class="ayuda" id="telefono-ayuda">Te llamamos o escribimos por WhatsApp a este número. Ejemplo: 099 123 4567</p>
+          <input id="telefono" name="telefono" type="tel" inputmode="tel" autocomplete="tel" enterkeyhint="next" maxlength="20" aria-describedby="telefono-ayuda telefono-error" required>
+          <p class="error" id="telefono-error" aria-live="polite"></p>
+        </div>
+
+        <div class="campo" data-campo="servicio">
+          <label for="servicio">¿Qué servicio te interesa?</label>
+          <div class="select">
+            <select id="servicio" name="servicio" aria-describedby="servicio-ayuda servicio-error" required>
+              <option value="" selected disabled>Elige una opción</option>
+              <option value="Valoración">Valoración (si no sabes qué necesitas)</option>
+              <option value="Limpieza">Limpieza</option>
+              <option value="Blanqueamiento">Blanqueamiento</option>
+              <option value="Combo limpieza + blanqueamiento">Combo limpieza + blanqueamiento</option>
+              <option value="Ortodoncia">Ortodoncia con brackets</option>
+              <option value="Alineadores">Alineadores transparentes</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+          <p class="ayuda" id="servicio-ayuda">Si tienes dudas, elige Valoración y te orientamos.</p>
+          <p class="error" id="servicio-error" aria-live="polite"></p>
+        </div>
+
+        <div class="campo" data-campo="ciudad">
+          <label for="ciudad">Ciudad o sector <span class="opcional">(opcional)</span></label>
+          <p class="ayuda" id="ciudad-ayuda">Así te sugerimos la sede más cercana: Norte (Quito) o Valle (Cumbayá).</p>
+          <input id="ciudad" name="ciudad" type="text" autocomplete="address-level2" autocapitalize="words" enterkeyhint="next" maxlength="60" list="ciudades" aria-describedby="ciudad-ayuda ciudad-error">
+          <datalist id="ciudades">
+            <option value="Quito"></option>
+            <option value="Cumbayá"></option>
+            <option value="Tumbaco"></option>
+            <option value="Valle de los Chillos"></option>
+            <option value="Sangolquí"></option>
+          </datalist>
+          <p class="error" id="ciudad-error" aria-live="polite"></p>
+        </div>
+
+        <div class="campo" data-campo="correo">
+          <label for="correo">Correo <span class="opcional">(opcional)</span></label>
+          <p class="ayuda" id="correo-ayuda">Para enviarte la confirmación de la cita.</p>
+          <input id="correo" name="correo" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" enterkeyhint="next" maxlength="120" aria-describedby="correo-ayuda correo-error">
+          <p class="error" id="correo-error" aria-live="polite"></p>
+        </div>
+
+        <div class="campo" data-campo="mensaje">
+          <label for="mensaje">Mensaje <span class="opcional">(opcional)</span></label>
+          <p class="ayuda" id="mensaje-ayuda">Cuéntanos qué necesitas o qué días te quedan mejor.</p>
+          <textarea id="mensaje" name="mensaje" rows="4" maxlength="500" enterkeyhint="enter" aria-describedby="mensaje-ayuda mensaje-contador mensaje-error"></textarea>
+          <p class="contador" id="mensaje-contador" aria-live="off">0 de 500</p>
+          <p class="error" id="mensaje-error" aria-live="polite"></p>
+        </div>
+
+        <!-- Trampa para bots: invisible para las personas y para lectores de pantalla. -->
+        <div class="trampa" aria-hidden="true">
+          <label for="sitio_web">No llenes este campo</label>
+          <input id="sitio_web" name="sitio_web" type="text" tabindex="-1" autocomplete="off">
+        </div>
+
+        <div class="campo campo-check" data-campo="consentimiento">
+          <div class="check">
+            <input id="consentimiento" name="consentimiento" type="checkbox" aria-describedby="consentimiento-error" required>
+            <label for="consentimiento">Autorizo a la Clínica Dental Cerro Alto a usar mis datos solo para contactarme sobre esta solicitud.</label>
+          </div>
+          <details class="datos">
+            <summary>Cómo usamos tus datos</summary>
+            <ul>
+              <li>Los usamos solo para llamarte o escribirte por WhatsApp o correo sobre tu cita.</li>
+              <li>No los vendemos ni los compartimos con otras empresas.</li>
+              <li>No te enviaremos publicidad, salvo que tú nos lo pidas.</li>
+              <li>Puedes pedir que los corrijamos o los borremos cuando quieras, llamando al <a href="tel:+59320004400">+593 2 000 4400</a>.</li>
+            </ul>
+          </details>
+          <p class="error" id="consentimiento-error" aria-live="polite"></p>
+        </div>
+
+        <div class="despues" id="que-pasa-despues">
+          <h3>Qué pasa después</h3>
+          <ol>
+            <li>Recibimos tu solicitud al instante.</li>
+            <li>Te llamamos o escribimos por WhatsApp desde el <span class="sin-corte">+593 2 000 4400</span> <strong id="cuando">en horario de atención</strong> (lunes a viernes de 08:00 a 18:00 y sábados de 09:00 a 13:00).</li>
+            <li>Elegimos juntos el día, la hora y la sede.</li>
+          </ol>
+        </div>
+
+        <p id="error-envio" class="error-envio" role="alert" hidden></p>
+
+        <button type="submit" id="boton-enviar" class="boton">
+          <span class="boton-texto">Enviar solicitud</span>
+        </button>
       </form>
-    </div>
 
-    <div class="col-der">
-      <div class="titulo">Nuestras sedes</div>
-      <p class="texto"><b>Sede Norte:</b> Av. Las Retamas N38-150 y Calle Los Guabos, Quito. Lunes a viernes 8:00 a 19:00, sabados 8:00 a 13:00.</p>
-      <p class="texto"><b>Sede Valle:</b> C.C. Paseo Arrayanes, local 14, Via Interoceanica km 12, Cumbaya. Lunes a viernes 10:00 a 19:00, sabados 9:00 a 14:00.</p>
-      <p class="texto">Telefono: +593 2 000 4400</p>
-      <p class="texto">Aceptamos todas las tarjetas. Consulte por nuestras promociones vigentes en blanqueamiento y ortodoncia.</p>
-    </div>
-  </div>
+      <!-- Confirmación: reemplaza al formulario después de un envío exitoso. -->
+      <div id="confirmacion" class="confirmacion" tabindex="-1" hidden>
+        <svg class="confirmacion-icono" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1.2 14.4-4.2-4.2 1.4-1.4 2.8 2.8 5.6-5.6 1.4 1.4-7 7z"/></svg>
+        <h2 id="confirmacion-titulo">¡Listo, <span id="confirmacion-nombre"></span>! Recibimos tu solicitud</h2>
+        <p id="confirmacion-cuando"></p>
+        <p>Te llamaremos al <strong id="confirmacion-telefono" class="sin-corte"></strong> desde el <span class="sin-corte">+593 2 000 4400</span>. Si el número está mal, llámanos tú para corregirlo.</p>
+        <button type="button" id="otra-solicitud" class="boton boton-secundario">Enviar otra solicitud</button>
+      </div>
+    </section>
 
-  <div class="pie">
-    Al enviar este formulario usted acepta los terminos y condiciones y la politica de tratamiento de datos de la clinica, la cual puede ser modificada sin previo aviso. La informacion proporcionada podra ser utilizada con fines comerciales y de contacto por la clinica y sus aliados. Copyright 2019 Clinica Dental Cerro Alto. Todos los derechos reservados.
+    <aside class="lateral" id="sedes" aria-labelledby="titulo-sedes">
+      <h2 id="titulo-sedes">Nuestras sedes</h2>
+      <div class="sede">
+        <h3>Sede Norte</h3>
+        <p>Av. Las Retamas N38-150 y Calle Los Guabos, Quito</p>
+        <dl>
+          <dt>Lunes a viernes</dt><dd>08:00 – 19:00</dd>
+          <dt>Sábados</dt><dd>08:00 – 13:00</dd>
+        </dl>
+      </div>
+      <div class="sede">
+        <h3>Sede Valle</h3>
+        <p>C.C. Paseo Arrayanes, local 14, Vía Interoceánica km 12, Cumbayá</p>
+        <dl>
+          <dt>Lunes a viernes</dt><dd>10:00 – 19:00</dd>
+          <dt>Sábados</dt><dd>09:00 – 14:00</dd>
+        </dl>
+      </div>
+      <p class="telefono-lateral">¿Prefieres llamar? <a href="tel:+59320004400">+593 2 000 4400</a></p>
+    </aside>
   </div>
-</div>
+</main>
+
+<footer class="pie">
+  <p>© 2026 Clínica Dental Cerro Alto · Quito, Ecuador</p>
+</footer>
+
 <script src="config.js"></script>
+<script src="validacion.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
